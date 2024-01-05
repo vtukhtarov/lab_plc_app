@@ -1,14 +1,19 @@
 import React, {useState}  from 'react';
 import useStore from "./store";
-import {Button, Container, Stack} from "@mui/material";
+import {
+    Button,
+    Container,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow
+} from "@mui/material";
+import Paper from '@mui/material/Paper';
 
 const styles = {
-    table: {
-        width: '100%',
-        borderCollapse: 'collapse',
-        textAlign: 'left',
-        marginTop: '20px',
-    },
     th: {
         border: '1px solid #ddd',
         padding: '8px',
@@ -28,12 +33,12 @@ const styles = {
         cursor: 'pointer',
     },
     headerCell: {
-        background: '#4CAF50',
+        background: 'dodgerblue',
         color: 'white',
         padding: '8px',
     },
     headerCellSecond: {
-        background: 'white',
+        background: 'skyblue',
         color: 'black',
         padding: '8px',
     },
@@ -103,9 +108,9 @@ function ActionPanel () {
                 <input
                     value={actionInput}
                     onChange={(e) => setActionInput(e.target.value)}
-                    placeholder="Event"
+                    placeholder="Action"
                 />
-                <Button onClick={handleAddTact}>Add tact and event</Button>
+                <Button onClick={handleAddTact}>Add tact and action</Button>
             </Stack>
             <Stack direction="row" spacing={2}>
                 <input
@@ -145,93 +150,97 @@ function MainLabComponent () {
 
     return (
         <Container>
-            <ActionPanel />
-            <table style={styles.table}>
-                <thead>
-                <tr>
-                    <th style={styles.headerCell}>Такт (кроки)</th>
-                    <th style={styles.headerCellSecond}>
-                        Дії контрольні операції
-                    </th>
-                    <th style={styles.headerCell} colSpan={sensors.length}>
-                        Стан датчиків
-                    </th>
-                    <th
-                        style={styles.headerCellSecond}
-                        colSpan={mechanisms.length}>
-                        Стан механізмів
-                    </th>
-                </tr>
-                <tr>
-                    <th style={styles.th}></th>
-                    <th style={styles.th}></th>
-                    {sensors.map((sensor, index) => (
-                        <th style={styles.th} key={index}>
-                            {sensor}
-                        </th>
-                    ))}
-                    {mechanisms.map((mechanism, index) => (
-                        <th style={styles.th} key={index}>
-                            {mechanism}
-                        </th>
-                    ))}
-                </tr>
-                </thead>
-                <tbody>
-                {tact.map((t, index) => (
-                    <tr key={t.id}>
-                        <td style={styles.td}>{t.id}</td>
-                        <td style={styles.td}>{t.actionInput}</td>
-                        {sensors.map((sensor, sensorIndex) => (
-                            <td style={styles.td} key={sensorIndex}>
-                                <select
-                                    value={
-                                        sensorStates[t.id]?.[sensor] || ''
-                                    }
-                                    onChange={(e) =>
-                                        updateSensorState(
-                                            t.id,
-                                            sensor,
-                                            e.target.value
-                                        )
-                                    }
-                                >
-                                    <option value="">Select</option>
-                                    <option value="10">10</option>
-                                    <option value="01">01</option>
-                                    <option value="00">00</option>
-                                    <option value="11">11</option>
-                                </select>
-                            </td> // Adjust as necessary
-                        ))}
-                        {mechanisms.map((mechanism, mechanismIndex) => (
-                            <td style={styles.td} key={mechanismIndex}>
-                                <select
-                                    value={
-                                        mechanismStates[t.id]?.[
-                                            mechanism
-                                            ] || ''
-                                    }
-                                    onChange={(e) =>
-                                        updateMechanismState(
-                                            t.id,
-                                            mechanism,
-                                            e.target.value
-                                        )
-                                    }
-                                >
-                                    <option value="">Select</option>
-                                    <option value="10">10</option>
-                                    <option value="01">01</option>
-                                    <option value="00">00</option>
-                                    <option value="11">11</option>
-                                </select>
-                            </td> // Adjust as necessary
-                        ))}
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+            <Stack spacing={2}>
+                <ActionPanel />
+                <TableContainer component={Paper}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell style={styles.headerCell}>Такт (кроки)</TableCell>
+                                <TableCell style={styles.headerCellSecond}>
+                                    Action of control operation
+                                </TableCell>
+                                <TableCell style={styles.headerCell} colSpan={sensors.length}>
+                                    Sensors state
+                                </TableCell>
+                                <TableCell
+                                    style={styles.headerCellSecond}
+                                    colSpan={mechanisms.length}>
+                                    Mechanisms state
+                                </TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell style={styles.th}></TableCell>
+                                <TableCell style={styles.th}></TableCell>
+                                {sensors.map((sensor, index) => (
+                                    <TableCell style={styles.th} key={index}>
+                                        {sensor}
+                                    </TableCell>
+                                ))}
+                                {mechanisms.map((mechanism, index) => (
+                                    <TableCell style={styles.th} key={index}>
+                                        {mechanism}
+                                    </TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {tact.map((t, index) => (
+                                <tr key={t.id}>
+                                    <td style={styles.td}>{t.id}</td>
+                                    <td style={styles.td}>{t.actionInput}</td>
+                                    {sensors.map((sensor, sensorIndex) => (
+                                        <td style={styles.td} key={sensorIndex}>
+                                            <select
+                                                value={
+                                                    sensorStates[t.id]?.[sensor] || ''
+                                                }
+                                                onChange={(e) =>
+                                                    updateSensorState(
+                                                        t.id,
+                                                        sensor,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <option value="">Select</option>
+                                                <option value="10">10</option>
+                                                <option value="01">01</option>
+                                                <option value="00">00</option>
+                                                <option value="11">11</option>
+                                            </select>
+                                        </td> // Adjust as necessary
+                                    ))}
+                                    {mechanisms.map((mechanism, mechanismIndex) => (
+                                        <td style={styles.td} key={mechanismIndex}>
+                                            <select
+                                                value={
+                                                    mechanismStates[t.id]?.[
+                                                        mechanism
+                                                        ] || ''
+                                                }
+                                                onChange={(e) =>
+                                                    updateMechanismState(
+                                                        t.id,
+                                                        mechanism,
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                <option value="">Select</option>
+                                                <option value="10">10</option>
+                                                <option value="01">01</option>
+                                                <option value="00">00</option>
+                                                <option value="11">11</option>
+                                            </select>
+                                        </td> // Adjust as necessary
+                                    ))}
+                                </tr>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Stack>
         </Container>
     );
 }

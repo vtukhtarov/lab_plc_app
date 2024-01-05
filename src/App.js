@@ -7,12 +7,6 @@ import MainLabComponent, {jsonData, resetStore} from "./MainLabComponent";
 
 function App() {
 
-
-    // Function to reset all states
-    const handleReset = () => {
-        resetStore(); // This will reset all states in the zustand store
-    };
-
     const handleExportToJson = () => {
 
         const data = jsonData();
@@ -21,7 +15,7 @@ function App() {
         const href = URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = href;
-        link.download = 'table_data.json';
+        link.download = 'export.json';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -33,12 +27,10 @@ function App() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = JSON.parse(e.target.result);
-
                 resetStore(); // Reset current state before importing new data
-
                 // Directly set the state to the imported data
                 useStore.setState({
-                    takt: data.takt,
+                    tact: data.tact,
                     sensors: data.sensors,
                     mechanisms: data.mechanisms,
                     sensorStates: data.sensorStates,
@@ -54,7 +46,7 @@ function App() {
     return (
         <ThemeProvider theme={defaultTheme}>
             <AppBar position="relative">
-                <Toolbar>Лабороторна робота 2,3,4: Бохан І., Рускіх А. Тухтаров В.</Toolbar>
+                <Toolbar>ПпсРЧ: Лабороторна робота 2,3,4: Бохан І., Рускіх А. Тухтаров В.</Toolbar>
             </AppBar>
             <main>
                 <Box sx={{
@@ -78,7 +70,7 @@ function App() {
                                 onChange={handleFileSelect}/>
                             </Button>
                             <Button variant="outlined" onClick={handleExportToJson}>Export to JSON</Button>
-                            <Button variant="outlined" onClick={handleReset}>Reset Table</Button>
+                            <Button variant="outlined" onClick={resetStore}>Reset Table</Button>
                         </Stack>
                     </Container>
                 </Box>
