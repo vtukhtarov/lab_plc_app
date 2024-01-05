@@ -46,7 +46,7 @@ function App() {
     return (
         <ThemeProvider theme={defaultTheme}>
             <AppBar position="relative">
-                <Toolbar>ПпсРЧ: Лабороторна робота 2,3,4: Бохан І., Рускіх А. Тухтаров В.</Toolbar>
+                <Toolbar>ПпсРЧ: Лабороторна робота 2,3,4: Бохан І.А., Рускіх О.В., Тухтаров В.Б.</Toolbar>
             </AppBar>
             <main>
                 <Box sx={{
